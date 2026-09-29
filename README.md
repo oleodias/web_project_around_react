@@ -127,10 +127,6 @@ npm run build
 npm run preview
 ```
 
-> Em desenvolvimento, o React roda dentro do `<StrictMode>`, que monta cada
-> componente duas vezes para achar problemas. Por isso o `console.log` dos
-> cartões aparece em dobro no console; em produção, aparece uma vez.
-
 ---
 
 ## 📈 Próximos passos
