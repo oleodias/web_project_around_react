@@ -1,18 +1,31 @@
-import ImagePopup from '../Popup/components/ImagePopup/ImagePopup.jsx';
-import RemoveCard from '../Popup/components/RemoveCard/RemoveCard.jsx';
+import { useContext } from 'react';
+import CurrentUserContext from '../../../../contexts/CurrentUserContext.js';
 
 export default function Card(props) {
-  const { card, handleOpenPopup } = props;
-  const { name, link, isLiked } = card;
+  const { card, onCardClick, onCardLike, onCardDelete } = props;
+  const { name, link, isLiked, owner } = card;
+  const { currentUser } = useContext(CurrentUserContext);
 
-  // O pop-up da imagem não tem título: o <Popup> usa isso para aplicar o
-  // modificador de imagem e não desenhar o <h3>.
-  const imageComponent = { children: <ImagePopup card={card} /> };
-  const removeCardPopup = { title: 'Tem certeza?', children: <RemoveCard /> };
+  // Só o dono do cartão vê a lixeira. owner é o _id de quem criou o cartão.
+  const isOwn = owner === currentUser._id;
 
-  const likeButtonClassName = `card__like-button ${
+  // Verificar se o usuário atual "curtiu" o cartão
+  const cardLikeButtonClassName = `card__like-button ${
     isLiked ? 'card__like-button_is-active' : ''
   }`;
+
+  // O Card não decide nada: só avisa ao Main qual cartão foi clicado.
+  function handleClick() {
+    onCardClick(card);
+  }
+
+  function handleLikeClick() {
+    onCardLike(card);
+  }
+
+  function handleDeleteClick() {
+    onCardDelete(card);
+  }
 
   return (
     <li className='card'>
@@ -20,20 +33,23 @@ export default function Card(props) {
         alt={name}
         className='card__image'
         src={link}
-        onClick={() => handleOpenPopup(imageComponent)}
+        onClick={handleClick}
       />
-      <button
-        aria-label='Excluir cartão'
-        className='card__delete-button'
-        type='button'
-        onClick={() => handleOpenPopup(removeCardPopup)}
-      />
+      {isOwn && (
+        <button
+          aria-label='Excluir cartão'
+          className='card__delete-button'
+          type='button'
+          onClick={handleDeleteClick}
+        />
+      )}
       <div className='card__description'>
         <h2 className='card__title'>{name}</h2>
         <button
           aria-label='Curtir cartão'
-          className={likeButtonClassName}
+          className={cardLikeButtonClassName}
           type='button'
+          onClick={handleLikeClick}
         />
       </div>
     </li>

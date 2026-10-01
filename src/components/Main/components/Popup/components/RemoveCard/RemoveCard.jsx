@@ -1,8 +1,13 @@
-export default function RemoveCard() {
-  // A exclusão de verdade vem no próximo sprint. Por enquanto, só impede que
-  // o navegador recarregue a página ao enviar.
+import { useContext } from 'react';
+import CurrentUserContext from '../../../../../../contexts/CurrentUserContext.js';
+
+export default function RemoveCard(props) {
+  const { card, onCardDelete } = props;
+  const { isLoading } = useContext(CurrentUserContext);
+
   function handleSubmit(evt) {
     evt.preventDefault();
+    onCardDelete(card);
   }
 
   return (
@@ -16,7 +21,7 @@ export default function RemoveCard() {
         className='button popup__button popup__button_type_compact'
         type='submit'
       >
-        Sim
+        {isLoading ? 'Excluindo...' : 'Sim'}
       </button>
     </form>
   );

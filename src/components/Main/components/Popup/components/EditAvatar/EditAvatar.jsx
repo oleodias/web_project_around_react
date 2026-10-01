@@ -1,8 +1,16 @@
+import { useContext, useRef } from 'react';
+import CurrentUserContext from '../../../../../../contexts/CurrentUserContext.js';
+
 export default function EditAvatar() {
-  // O envio de verdade vem no próximo sprint. Por enquanto, só impede que o
-  // navegador recarregue a página ao enviar.
+  const { handleUpdateAvatar, isLoading } = useContext(CurrentUserContext);
+
+  // Não controlado: o valor fica no próprio campo, e a ref dá acesso direto
+  // a ele no envio.
+  const avatarRef = useRef();
+
   function handleSubmit(evt) {
     evt.preventDefault();
+    handleUpdateAvatar({ avatar: avatarRef.current.value });
   }
 
   return (
@@ -10,7 +18,6 @@ export default function EditAvatar() {
       className='popup__form'
       id='avatar-form'
       name='avatar-form'
-      noValidate
       onSubmit={handleSubmit}
     >
       <input
@@ -18,6 +25,7 @@ export default function EditAvatar() {
         id='avatar-input'
         name='avatar'
         placeholder='Link da foto'
+        ref={avatarRef}
         required
         type='url'
       />
@@ -26,7 +34,7 @@ export default function EditAvatar() {
         className='button popup__button popup__button_type_compact'
         type='submit'
       >
-        Salvar
+        {isLoading ? 'Salvando...' : 'Salvar'}
       </button>
     </form>
   );
