@@ -4,12 +4,9 @@
 
 **Around The U.S.** é a galeria de lugares construída ao longo das Sprints 8 a
 12 do curso de Desenvolvimento Web da TripleTen Brasil — perfil, cartões com
-fotos e pop-ups para editar, adicionar, ampliar e excluir. Nesta etapa, a
-página começa a ser **portada para React**: a mesma interface, agora montada
-com componentes.
-
-Os cartões ainda vêm de **dados fictícios**; a conexão com o servidor, o envio
-dos formulários e as curtidas entram na próxima sprint.
+fotos e pop-ups para editar, adicionar, ampliar e excluir. Aqui, a página é
+**reescrita em React**: a mesma interface, montada com componentes e ligada
+ao servidor.
 
 ---
 
@@ -28,7 +25,8 @@ dos formulários e as curtidas entram na próxima sprint.
 
 ### Como os pop-ups funcionam
 
-O `Main` guarda **um estado**, `popup`, que começa em `null`:
+Um **único estado**, `popup`, que começa em `null` (na Sprint 13 ele ficava no
+`Main`; na 14, subiu para o `App`):
 
 ```jsx
 const [popup, setPopup] = useState(null);
@@ -55,20 +53,69 @@ aplicar o estilo de imagem e não desenhar o `<h3>`.
 
 | Componente                                           | O que faz                                            |
 | ---------------------------------------------------- | ---------------------------------------------------- |
-| `App`                                                | junta `Header`, `Main` e `Footer`                    |
+| `App`                                                | estados, solicitações à API e o provedor do contexto |
 | `Header`                                             | o logotipo                                           |
-| `Main`                                               | perfil, lista de cartões e o estado do pop-up aberto |
+| `Main`                                               | perfil, lista de cartões e o pop-up aberto           |
 | `Footer`                                             | o rodapé                                             |
-| `Card`                                               | um cartão; abre a imagem ampliada e o "Tem certeza?" |
+| `Card`                                               | um cartão: imagem, curtida e lixeira (só do dono)    |
 | `Popup`                                              | a moldura comum: X, título e conteúdo                |
 | `EditProfile`, `NewCard`, `EditAvatar`, `RemoveCard` | os formulários de cada pop-up                        |
 | `ImagePopup`                                         | a imagem ampliada e a legenda                        |
 
 ---
 
+## 🚩 Sprint 14 — Dados, contexto e servidor
+
+- A classe `Api` da Sprint 12 em `src/utils/api.js`, exportada como **uma
+  instância** já configurada
+- Perfil e cartões vêm do servidor, **pedidos uma vez só**, na montagem do
+  `App`
+- **`CurrentUserContext`** (`src/contexts`): o `Main` e o `Card` leem o
+  usuário atual sem receber props por vários níveis
+- **Estado elevado ao `App`**: `currentUser`, `cards`, `popup` e todas as
+  solicitações à API ficam nele; o `Main` recebe dados e funções por props
+- Curtir e descurtir; excluir só os próprios cartões, depois do
+  "Tem certeza?"
+- Editar o perfil (formulário **controlado**, já preenchido), trocar a foto
+  (campo lido por **ref**) e adicionar cartões, que entram no início da lista
+- Os botões mostram "Salvando..." / "Excluindo..." enquanto o servidor
+  responde; os pop-ups fecham também com **Esc** e com clique no fundo
+
+### Para onde vão os dados
+
+```
+App ── currentUser, cards, popup, isLoading
+ │       e as funções que chamam a API
+ ├─ CurrentUserContext.Provider value={{ currentUser, handleUpdateUser,
+ │                                        handleUpdateAvatar, isLoading }}
+ └─ Main ── props: cards, popup, onCardLike, onCardDelete, onAddPlaceSubmit…
+     ├─ Card ── avisa: onCardClick / onCardLike / onCardDelete (card)
+     └─ Popup ── EditProfile, EditAvatar (contexto) · NewCard, RemoveCard (props)
+```
+
+Os componentes **avisam**, e o `App` **decide**: chama a API e, com a
+resposta, atualiza o estado. A tela se redesenha sozinha. Nenhum estado é
+alterado no lugar: curtir troca o cartão com `map`, excluir cria a lista nova
+com `filter`, e adicionar faz `[newCard, ...state]`.
+
+### Decisões
+
+| Decisão                                                                         | Motivo                                                                                                          |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Sem `<StrictMode>` no `main.jsx`                                                | Em desenvolvimento, ele monta tudo duas vezes, e as duas solicitações iniciais apareceriam em dobro na aba Rede |
+| `.then().catch()` em vez de `async` + `await` + `.then()`                       | O exemplo da descrição mistura os dois estilos; um só faz o mesmo e se lê melhor                                |
+| Nomes dos métodos da `Api` da Sprint 12 (`getInitialCards`, `changeLikeStatus`) | A descrição manda colar a classe do projeto anterior                                                            |
+| A lixeira abre o "Tem certeza?"                                                 | O pop-up já existia, e a conclusão da descrição sugere usá-lo                                                   |
+| Sem `noValidate` nos formulários                                                | Assim o navegador bloqueia campo vazio e link inválido antes de qualquer solicitação                            |
+| `onMouseDown` no fundo do pop-up                                                | Selecionar texto dentro do campo e soltar fora não fecha o pop-up                                               |
+
+---
+
 ## 🛠 Tecnologias Utilizadas
 
-- **React 19** com componentes funcionais e o hook `useState`
+- **React 19** com componentes funcionais e os hooks `useState`, `useEffect`,
+  `useContext` e `useRef`; Context API
+- **Fetch API** com promessas, numa classe `Api`
 - **JSX**: `className`, expressões entre chaves, `map` com `key`,
   renderização condicional com `&&` e com o operador ternário
 - **Vite 8**: servidor de desenvolvimento, `import` de imagens e CSS, build
@@ -102,6 +149,8 @@ src/
 │                   ├── ImagePopup/ImagePopup.jsx
 │                   ├── NewCard/NewCard.jsx
 │                   └── RemoveCard/RemoveCard.jsx
+├── contexts/CurrentUserContext.js
+├── utils/api.js                    ← classe Api e a instância exportada
 ├── index.css
 └── main.jsx
 ```
@@ -131,10 +180,8 @@ npm run preview
 
 ## 📈 Próximos passos
 
-1. Buscar o perfil e os cartões no servidor, com a classe `Api` da Sprint 12
-2. Enviar os formulários e validar os campos
-3. Curtir e excluir cartões de verdade
-4. Fechar os pop-ups também com Esc e com clique fora
+1. Mensagens de validação nos campos, como no projeto em JavaScript puro
+2. Mostrar ao usuário quando o servidor responde com erro
 
 ---
 
