@@ -1,10 +1,32 @@
+import { useEffect } from 'react';
+
 export default function Popup(props) {
-  // children é o conteúdo do pop-up; onClose vem do Main e volta o estado
-  // do pop-up para null.
+  // children é o conteúdo do pop-up; onClose vem do App e volta o estado do
+  // pop-up para null.
   const { onClose, title, children } = props;
 
+  // Esc fecha. O ouvinte só existe enquanto o pop-up está na tela: a função
+  // devolvida pelo efeito o remove quando o pop-up sai.
+  useEffect(() => {
+    function handleEscClose(evt) {
+      if (evt.key === 'Escape') {
+        onClose();
+      }
+    }
+
+    document.addEventListener('keydown', handleEscClose);
+    return () => document.removeEventListener('keydown', handleEscClose);
+  }, [onClose]);
+
+  // Clique no fundo escuro fecha; clique dentro do quadro, não.
+  function handleOverlayClick(evt) {
+    if (evt.target === evt.currentTarget) {
+      onClose();
+    }
+  }
+
   return (
-    <div className='popup'>
+    <div className='popup' onMouseDown={handleOverlayClick}>
       <div
         className={`popup__content ${
           !title ? 'popup__content_content_image' : ''

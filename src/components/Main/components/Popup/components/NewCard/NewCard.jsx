@@ -1,8 +1,25 @@
-export default function NewCard() {
-  // O envio de verdade vem no próximo sprint. Por enquanto, só impede que o
-  // navegador recarregue a página ao enviar.
+import { useContext, useState } from 'react';
+import CurrentUserContext from '../../../../../../contexts/CurrentUserContext.js';
+
+export default function NewCard(props) {
+  const { onAddPlaceSubmit } = props;
+  const { isLoading } = useContext(CurrentUserContext);
+
+  // Componentes controlados, começando vazios.
+  const [name, setName] = useState('');
+  const [link, setLink] = useState('');
+
+  function handleNameChange(evt) {
+    setName(evt.target.value);
+  }
+
+  function handleLinkChange(evt) {
+    setLink(evt.target.value);
+  }
+
   function handleSubmit(evt) {
     evt.preventDefault();
+    onAddPlaceSubmit({ name, link });
   }
 
   return (
@@ -10,7 +27,6 @@ export default function NewCard() {
       className='popup__form'
       id='new-card-form'
       name='card-form'
-      noValidate
       onSubmit={handleSubmit}
     >
       <input
@@ -22,6 +38,8 @@ export default function NewCard() {
         placeholder='Título'
         required
         type='text'
+        value={name}
+        onChange={handleNameChange}
       />
       <span className='popup__error' id='card-name-input-error'></span>
       <input
@@ -31,10 +49,12 @@ export default function NewCard() {
         placeholder='URL da Imagem'
         required
         type='url'
+        value={link}
+        onChange={handleLinkChange}
       />
       <span className='popup__error' id='link-input-error'></span>
       <button className='button popup__button' type='submit'>
-        Criar
+        {isLoading ? 'Salvando...' : 'Criar'}
       </button>
     </form>
   );
