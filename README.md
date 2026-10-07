@@ -178,13 +178,6 @@ npm run preview
 
 ---
 
-## 📈 Próximos passos
-
-1. Mensagens de validação nos campos, como no projeto em JavaScript puro
-2. Mostrar ao usuário quando o servidor responde com erro
-
----
-
 ## 👤 Autor
 
 **Leonardo Dias Caumo** — _Desenvolvido como parte do portfólio de estudos em Desenvolvimento Web da TripleTen Brasil._
