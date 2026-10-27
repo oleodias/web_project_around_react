@@ -1,5 +1,21 @@
 # ⚛️ Around The U.S. em React
 
+## 📅 Sprints
+
+Projeto das **Sprints 13 e 14** do curso de Desenvolvimento Web da TripleTen
+Brasil. É a reescrita em React do projeto das Sprints 8 a 12
+([`web_project_around_pt`](https://github.com/oleodias/web_project_around_pt));
+o back-end está em
+[`web_project_around_express`](https://github.com/oleodias/web_project_around_express)
+(Sprints 15 e 16).
+
+| Sprint | O que foi feito neste repositório |
+| --- | --- |
+| 13 | projeto criado com a Vite, marcação em JSX, componentes e um pop-up único |
+| 14 | a classe `Api`, o `CurrentUserContext`, o estado elevado ao `App` e os formulários salvando no servidor |
+
+---
+
 ## 📝 Descrição do Projeto
 
 **Around The U.S.** é a galeria de lugares construída ao longo das Sprints 8 a
