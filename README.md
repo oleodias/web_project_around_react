@@ -40,7 +40,7 @@ ao servidor.
 
 ## 🎬 Demonstração em vídeo
 
-> 🔗 **Vídeo:** _link a adicionar depois da publicação_
+> 🔗 **Vídeo:** [assistir no Google Drive](https://drive.google.com/file/d/1EGtub2g7qDvHV19oeg9nm5BccYl0sHdC/view?usp=drive_link)
 
 Vídeo de **1min55** (1080p, 60 fps, legendas em português) com o estado atual
 da Sprint 14: o código deste repositório, **sem alterações**, rodando com
