@@ -63,6 +63,11 @@ cursor, setas, destaques, legendas e capítulos), feita com Python, Cairo e
 ffmpeg. Nenhuma tela foi simulada ou redesenhada. Os scripts de gravação não
 fazem parte deste repositório.
 
+**Trilha sonora:** original, composta e sintetizada por código para o vídeo
+(sem samples nem músicas de terceiros). É um lo-fi a 92 BPM sincronizado com as
+animações: a batida entra quando o app ocupa a tela, cada capítulo tem uma
+transição sonora e cada destaque toca uma nota do acorde.
+
 ---
 
 ## 🚩 Sprint 13 — Primeiros componentes
