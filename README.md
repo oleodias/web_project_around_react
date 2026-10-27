@@ -24,6 +24,50 @@ fotos e pop-ups para editar, adicionar, ampliar e excluir. Aqui, a página é
 **reescrita em React**: a mesma interface, montada com componentes e ligada
 ao servidor.
 
+### Resumo
+
+- **O que foi construído e por quê:** a interface em React ligada à API do
+  curso por uma classe `Api` (Fetch + promessas). O estado fica no `App` e o
+  usuário atual é compartilhado pelo `CurrentUserContext`, para que os
+  componentes só avisem e o `App` decida.
+- **Problema que resolve:** editar perfil e avatar, adicionar, curtir e excluir
+  lugares (com confirmação), sempre sincronizados com o servidor, com retorno
+  visual ("Salvando..." / "Excluindo...") e sem recarregar a página.
+- **Tecnologias:** React 19 (`useState`, `useEffect`, `useContext`, `useRef`),
+  Context API, Fetch API, Vite 8, CSS3 com BEM, Prettier e oxlint.
+
+---
+
+## 🎬 Demonstração em vídeo
+
+> 🔗 **Vídeo:** _link a adicionar depois da publicação_
+
+Vídeo de **1min55** (1080p, 60 fps, legendas em português) com o estado atual
+da Sprint 14: o código deste repositório, **sem alterações**, rodando com
+`npm run dev` e ligado à **API real** da TripleTen. Os perfis, os cartões e as
+fotos são os dados da conta do curso.
+
+| Capítulo | O que aparece | Onde está no código |
+| --- | --- | --- |
+| 01 · Dados da API | perfil e cartões chegam uma vez, na montagem | `useEffect` com `[]` no `App` |
+| 02 · Curtidas | curtir e descurtir | `changeLikeStatus` + `map` no estado |
+| 03 · Editar perfil | formulário já preenchido, "Salvando...", tela atualizada | `EditProfile` (controlado) + `CurrentUserContext` |
+| 04 · Foto do perfil | troca do avatar | `EditAvatar` (campo lido por `useRef`) |
+| 05 · Novo local | o cartão novo entra no início da lista | `[newCard, ...state]` |
+| 06 · Excluir cartão | "Tem certeza?" e "Excluindo..." | `RemoveCard` + `filter` no estado |
+| 07 · Pop-ups | foto ampliada; fecha com X, Esc ou clique no fundo | `Popup` e `ImagePopup` |
+
+**Como o vídeo foi feito:** a tela é uma gravação real do navegador
+(Playwright, em 2744×1544). Por cima dela há só uma camada de *motion* (câmera,
+cursor, setas, destaques, legendas e capítulos), feita com Python, Cairo e
+ffmpeg. Nenhuma tela foi simulada ou redesenhada. Os scripts de gravação não
+fazem parte deste repositório.
+
+**Trilha sonora:** original, composta e sintetizada por código para o vídeo
+(sem samples nem músicas de terceiros). É um lo-fi a 92 BPM sincronizado com as
+animações: a batida entra quando o app ocupa a tela, cada capítulo tem uma
+transição sonora e cada destaque toca uma nota do acorde.
+
 ---
 
 ## 🚩 Sprint 13 — Primeiros componentes
@@ -183,7 +227,9 @@ npm install
 npm run dev
 ```
 
-O navegador abre sozinho em `http://localhost:3000`.
+O navegador abre sozinho em `http://localhost:3000`. Os dados vêm da API do
+curso (`around-api.pt-br.tripleten-services.com`); o endereço e o token de
+acesso ficam na instância exportada por `src/utils/api.js`.
 
 Para o build de produção:
 
