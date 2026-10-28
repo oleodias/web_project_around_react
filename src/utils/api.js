@@ -72,10 +72,12 @@ class Api {
 
 // Exporta a instância pronta, e não a classe: todo o app usa o mesmo objeto,
 // já configurado com o endereço e o token.
+// O token vem do arquivo .env (fora do Git): a Vite expõe ao código só as
+// variáveis que começam com VITE_, em import.meta.env.
 const api = new Api({
   baseUrl: 'https://around-api.pt-br.tripleten-services.com/v1',
   headers: {
-    authorization: '76e5385b-03a5-4650-987b-99f27f31e2ff',
+    authorization: import.meta.env.VITE_API_TOKEN,
     'Content-Type': 'application/json',
   },
 });
