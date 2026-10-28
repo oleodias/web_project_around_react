@@ -43,8 +43,9 @@ ao servidor.
 > 🔗 **Vídeo:** [assistir no Google Drive](https://drive.google.com/file/d/1EGtub2g7qDvHV19oeg9nm5BccYl0sHdC/view?usp=drive_link)
 
 Vídeo de **1min55** (1080p, 60 fps, legendas em português) com o estado atual
-da Sprint 14: o código deste repositório, **sem alterações**, rodando com
-`npm run dev` e ligado à **API real** da TripleTen. Os perfis, os cartões e as
+da Sprint 14: o código deste repositório, rodando com `npm run dev`, com a
+única diferença de que o token foi movido para uma variável de ambiente, e
+ligado à **API real** da TripleTen. Os perfis, os cartões e as
 fotos são os dados da conta do curso.
 
 | Capítulo | O que aparece | Onde está no código |
@@ -228,8 +229,9 @@ npm run dev
 ```
 
 O navegador abre sozinho em `http://localhost:3000`. Os dados vêm da API do
-curso (`around-api.pt-br.tripleten-services.com`); o endereço e o token de
-acesso ficam na instância exportada por `src/utils/api.js`.
+curso (`around-api.pt-br.tripleten-services.com`). Crie um arquivo .env na
+raiz, copiando o .env.example, e coloque o token fornecido pelo curso em
+VITE_API_TOKEN.
 
 Para o build de produção:
 
