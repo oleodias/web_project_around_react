@@ -1,5 +1,7 @@
 # ⚛️ Around The U.S. em React
 
+> 🎬 **Vídeo de demonstração (2 min):** https://drive.google.com/file/d/1EGtub2g7qDvHV19oeg9nm5BccYl0sHdC/view
+
 ## 📅 Sprints
 
 Projeto das **Sprints 13 e 14** do curso de Desenvolvimento Web da TripleTen
